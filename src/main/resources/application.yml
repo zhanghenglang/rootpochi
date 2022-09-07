@@ -55,8 +55,3 @@ server:
   port: 8080
 
 #微信配置
-wechat:
-  appId: wxd41d11dacf5e34a2
-  appSecret: 2055ec4b5de2418dfa9167d0d652e873
-  grantType: authorization_code
-  loginUrl: https://api.weixin.qq.com/sns/jscode2session
