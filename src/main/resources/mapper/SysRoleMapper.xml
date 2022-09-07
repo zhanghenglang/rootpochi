@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.pochi.mapper.SysRoleMapper">
+    <resultMap id="BaseResultMap" type="com.demo.pochi.pojo.SysRole">
+        <id column="role_id" property="roleId"/>
+        <result column="role_name" property="roleName"/>
+        <result column="role_sort" property="roleSort"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="deleted" property="deleted"/>
+    </resultMap>
+    <insert id="save" useGeneratedKeys="true" keyColumn="role_id" keyProperty="roleId">
+        insert into sys_role(role_name, role_sort, create_by, update_by) values (
+        #{roleName}, #{roleSort}, #{createBy}, #{updateBy}
+        )
+    </insert>
+    <update id="delete">
+         update sys_role
+        set deleted = 1
+        where role_id = #{roleId}
+    </update>
+    <update id="update">
+       update sys_role
+        set role_name = #{roleName},
+            role_sort = #{roleSort},
+            update_by = #{updateBy}
+        where role_id = #{roleId}
+    </update>
+    <select id="get" resultMap="BaseResultMap">
+        select role_id,
+               role_name,
+               role_sort,
+               create_by,
+               create_time,
+               update_by,
+               update_time
+        from sys_role
+        where role_id = #{roleId}
+    </select>
+    <select id="getByPage" resultMap="BaseResultMap">
+        select role_id,
+        role_name,
+        role_sort,
+        create_by,
+        create_time,
+        update_by,
+        update_time
+        from sys_role
+        where deleted = 0
+        <if test="params.roleName != null and params.roleName != ''">
+            and role_name = #{params.roleName}
+        </if>
+        order by role_sort asc
+        limit #{index}, #{pageSize}
+    </select>
+    <select id="countByPage" resultType="java.lang.Integer">
+        select count(*)
+        from sys_role
+        where deleted = 0
+        <if test="params.roleName != null and params.roleName != ''">
+            and role_name = #{params.roleName}
+        </if>
+    </select>
+    <select id="getByIds" resultMap="BaseResultMap">
+        select role_id,
+               role_name,
+               role_sort,
+               create_by,
+               create_time,
+               update_by,
+               update_time
+        from sys_role
+        where deleted = 0 and
+         role_id in (
+        <foreach collection="list" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </select>
+    <select id="getAll" resultMap="BaseResultMap">
+        select role_id,
+               role_name
+        from sys_role
+        where deleted = 0
+        order by role_sort
+    </select>
+
+
+</mapper>

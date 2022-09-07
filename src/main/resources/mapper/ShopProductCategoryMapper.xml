@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.pochi.mapper.ShopProductCategoryMapper">
+    <resultMap id="BaseResultMap" type="com.demo.pochi.pojo.ShopProductCategory">
+        <id column="id" property="id"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="name" property="name"/>
+        <result column="level" property="level"/>
+        <result column="nav_status" property="navStatus"/>
+        <result column="sort" property="sort"/>
+        <result column="icon" property="icon"/>
+        <result column="deleted" property="deleted"/>
+    </resultMap>
+    <insert id="save">
+        insert into shop_product_category(parent_id, name, level, nav_status, sort, icon) value (
+                                                                                                 #{parentId}, #{name},
+                                                                                                 #{level}, #{navStatus},
+                                                                                                 #{sort}, #{icon}
+            )
+    </insert>
+    <update id="update">
+        update shop_product_category
+        set parent_id = #{parentId}
+        <if test="name!=null and name!=''">
+            ,name = #{name}
+        </if>
+        <if test="icon!=null and icon!=''">
+            ,icon = #{icon}
+        </if>
+        <if test="level!=null">
+            ,level = #{level}
+        </if>
+        <if test="navStatus!=null">
+            ,nav_status = #{navStatus}
+        </if>
+        <if test="sort!=null">
+            ,sort = #{sort}
+        </if>
+        where id = #{id}
+    </update>
+    <update id="delete">
+        update shop_coupon_category
+        set deleted=1
+        where id=#{id}
+
+    </update>
+    <select id="getByParentIdAndName" resultMap="BaseResultMap">
+        select id,
+               parent_id,
+               name
+        from shop_product_category
+        where parent_id = #{parentId}
+          and name = #{name}
+          and deleted=0
+    </select>
+    <select id="get" resultMap="BaseResultMap">
+        select id,
+               parent_id,
+               name,
+               level,
+               nav_status,
+               sort,
+               icon
+        from shop_product_category
+        where id = #{id}
+    </select>
+    <select id="getByPage" resultMap="BaseResultMap">
+        select id,
+               parent_id,
+               name,
+               level,
+               nav_status,
+               sort,
+               icon
+        from shop_product_category
+        where deleted=0
+        order by sort
+        limit #{index}, #{pageSize}
+    </select>
+    <select id="countByPage" resultType="java.lang.Integer">
+        select count(*)
+        from shop_product_category
+        where deleted=0
+    </select>
+    <select id="getAll" resultMap="BaseResultMap">
+        select id,
+               parent_id,
+               name,
+               level,
+               nav_status,
+               sort,
+               icon
+        from shop_product_category
+        where deleted=0
+    </select>
+    <select id="getSelectList" resultMap="BaseResultMap">
+        select id,
+               parent_id,
+               name,
+               level,
+               nav_status,
+               sort,
+               icon
+        from shop_product_category
+        where level in (1, 2)
+        and deleted=0
+    </select>
+    <select id="getByIds" resultMap="BaseResultMap">
+         select id,
+               parent_id,
+               name,
+               level,
+               nav_status,
+               sort,
+               icon
+        from shop_product_category
+        where deleted = 0
+        and id in (
+        <foreach collection="list" separator="," item="id">
+            #{id}
+        </foreach>
+        )
+    </select>
+    <select id="getAllSecond" resultMap="BaseResultMap">
+          select id,
+               parent_id,
+               name
+        from shop_product_category
+        where level = 2
+        and deleted=0
+    </select>
+    <select id="getAllTop" resultMap="BaseResultMap">
+          select id,
+               name
+        from shop_product_category
+        where level = 1
+        and deleted=0
+    </select>
+</mapper>

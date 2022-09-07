@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.pochi.mapper.SysHelpMapper">
+    <resultMap id="BaseResultMap" type="com.demo.pochi.pojo.SysHelp">
+        <id column="id" property="id"/>
+        <result column="content" property="content"/>
+        <result column="title" property="title"/>
+        <result column="created_by" property="createdBy"/>
+        <result column="created_time" property="createdTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="deleted" property="deleted"/>
+    </resultMap>
+
+    <insert id="save">
+        insert into sys_help(content, title, created_by, update_by)
+        VALUES (#{content}, #{title}, #{createdBy}, #{updateBy})
+    </insert>
+    <update id="update">
+        update sys_help
+        <set>
+            <if test="content!=null and content!=''">
+                content = #{content},
+            </if>
+            <if test="title!=null and title!=''">
+                title = #{title}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="delete">
+        update sys_help
+        set deleted = 1
+        where id = #{id}
+    </update>
+    <select id="get" resultMap="BaseResultMap">
+        select id,
+               content,
+               title,
+               created_time,
+               created_by,
+               update_by,
+               update_time
+        from sys_help
+        where id = #{id}
+    </select>
+    <select id="getByPage" resultMap="BaseResultMap">
+        select id,
+        title,
+        created_time,
+        created_by,
+        update_by,
+        update_time
+        from sys_help
+        where deleted = 0
+        <if test="params.title!=null and params.title!=null">
+            and title like CONCAT('%', #{params.title}, '%')
+        </if>
+        limit #{index}, #{pageSize}
+    </select>
+    <select id="countByPage" resultType="java.lang.Integer">
+        select count(*)
+        from sys_help
+        where deleted = 0
+        <if test="params.title!=null and params.title!=null">
+            and title like CONCAT('%', #{params.title}, '%')
+        </if>
+    </select>
+
+
+</mapper>

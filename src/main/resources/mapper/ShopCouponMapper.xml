@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.pochi.mapper.ShopCouponMapper">
+    <resultMap id="BaseResultMap" type="com.demo.pochi.pojo.ShopCoupon">
+        <id column="id" property="id"/>
+        <result column="coupon_type" property="couponType"/>
+        <result column="name" property="name"/>
+        <result column="amount" property="amount"/>
+        <result column="min_point" property="minPoint"/>
+        <result column="start_time" property="startTime"/>
+        <result column="end_time" property="endTime"/>
+        <result column="rest_count" property="restCount"/>
+        <result column="publish_count" property="publishCount"/>
+        <result column="use_count" property="useCount"/>
+        <result column="receive_count" property="receiveCount"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="deleted" property="deleted"/>
+        <result column="status" property="status"/>
+    </resultMap>
+
+    <insert id="save">
+        insert into shop_coupon(id, coupon_type, name, amount, min_point,
+                                start_time, end_time, rest_count,
+                                publish_count, create_by, update_by)
+        VALUES (#{id}, #{couponType}, #{name}, #{amount}, #{minPoint},
+                #{startTime}, #{endTime}, #{restCount},
+                #{publishCount}, #{createBy}, #{updateBy})
+    </insert>
+    <update id="delete">
+        update shop_coupon
+        set deleted = 1
+        where id = #{id}
+    </update>
+    <update id="down">
+        update shop_coupon
+        set status = 0
+        where id = #{id}
+    </update>
+    <select id="getByPage" resultMap="BaseResultMap">
+        select id,
+        coupon_type,
+        name,
+        amount,
+        min_point,
+        start_time,
+        end_time,
+        rest_count,
+        publish_count,
+        use_count,
+        receive_count,
+        create_by,
+        create_time,
+        status
+        from shop_coupon
+        where deleted = 0
+        <if test="params.name != null and params.name != ''">
+            and name like concat('%', #{params.name}, '%')
+        </if>
+        order by create_time desc
+        limit #{index}, #{pageSize}
+    </select>
+    <select id="countByPage" resultType="java.lang.Integer">
+        select count(*)
+        from shop_coupon
+        where deleted = 0
+        <if test="params.name != null and params.name != ''">
+            and name like concat('%', #{params.name}, '%')
+        </if>
+    </select>
+
+
+</mapper>

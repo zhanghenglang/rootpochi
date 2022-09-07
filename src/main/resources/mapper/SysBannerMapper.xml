@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.pochi.mapper.SysBannerMapper">
+    <resultMap id="BaseResultMap" type="com.demo.pochi.pojo.SysBanner">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="pic" property="pic"/>
+        <result column="status" property="status"/>
+        <result column="click_count" property="clickCount"/>
+        <result column="order_count" property="orderCount"/>
+        <result column="url" property="url"/>
+        <result column="note" property="note"/>
+        <result column="sort" property="sort"/>
+        <result column="create_time" property="createTime"/>
+        <result column="create_by" property="createBy"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="deleted" property="deleted"/>
+    </resultMap>
+    <insert id="save">
+        insert into sys_banner(name, pic, url, note, sort,
+                               create_by, update_by)
+        values (#{name}, #{pic}, #{url}, #{note}, #{sort},
+                #{createBy}, #{updateBy})
+    </insert>
+    <update id="update">
+        update sys_banner
+        <set>
+            <if test="name!=null and name!=''">
+                name=#{name},
+            </if>
+            <if test="pic!=null and pic!=''">
+                pic=#{pic},
+            </if>
+            <if test="url!=null and url!=''">
+                url=#{url},
+            </if>
+            <if test="note!=null and note!=''">
+                note=#{note},
+            </if>
+            <if test="sort!=null and sort!=''">
+                sort=#{sort},
+            </if>
+            <if test="updateBy!=null and updateBy!=''">
+                update_by=#{updateBy},
+            </if>
+            <if test="status!=null">
+                status = #{status}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="updateStatus">
+        update sys_banner
+        set status = #{status}
+        where id = #{id}
+    </update>
+    <update id="delete">
+        update sys_banner
+        set deleted = 1
+        where id = #{id}
+    </update>
+    <select id="get" resultMap="BaseResultMap">
+        select id,
+               name,
+               pic,
+               status,
+               click_count,
+               order_count,
+               url,
+               note,
+               sort
+        from sys_banner
+        where id = #{id}
+    </select>
+    <select id="getByPage" resultMap="BaseResultMap">
+        select id,
+        name,
+        pic,
+        status,
+        click_count,
+        order_count,
+        url,
+        note,
+        sort,
+        create_time,
+        update_time,
+        create_by,
+        update_by
+        from sys_banner
+        where deleted = 0
+        <if test="params.status!=null">
+            and status = #{params.status}
+        </if>
+        order by sort asc, create_time desc
+        limit #{index}, #{pageSize}
+    </select>
+    <select id="countByPage" resultType="java.lang.Integer">
+        select count(*)
+        from sys_banner
+        where deleted = 0
+        <if test="params.status!=null">
+            and status = #{params.status}
+        </if>
+    </select>
+
+</mapper>

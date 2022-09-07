@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.pochi.mapper.ShopProductPackMapper">
+    <resultMap id="BaseResultMap" type="com.demo.pochi.pojo.ShopProductPack">
+        <id column="id" property="id"/>
+        <result column="product_id" property="productId"/>
+        <result column="pack_code" property="packCode"/>
+        <result column="price" property="price"/>
+        <result column="stock" property="stock"/>
+        <result column="low_stock" property="lowStock"/>
+        <result column="spec_name" property="specName"/>
+        <result column="sale" property="sale"/>
+        <result column="product_name" property="productName"/>
+    </resultMap>
+
+    <insert id="saveBatch">
+        insert into shop_product_pack(id, product_id, pack_code, price, stock, low_stock, spec_name, sale, product_name)
+        VALUES
+        <foreach collection="list" item="item" separator=",">
+            (
+            #{item.id}, #{item.productId}, #{item.packCode}, #{item.price}, #{item.stock}, #{item.lowStock},
+            #{item.specName}, #{item.sale}, #{item.productName}
+            )
+        </foreach>
+    </insert>
+    <delete id="deleteByPackCode">
+        delete
+        from shop_product_pack
+        where pack_code = #{packCode}
+    </delete>
+    <delete id="deleteById">
+        delete
+        from shop_product_pack
+        where id = #{id}
+    </delete>
+    <delete id="deleteByProductIds">
+        delete from shop_product_pack
+        where product_id in(
+        <foreach collection="list" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
+    <select id="getByPackCode" resultMap="BaseResultMap">
+        select id, product_id, pack_code
+        from shop_product_pack
+        where pack_code = #{packCode}
+    </select>
+    <select id="getByProductId" resultMap="BaseResultMap">
+        select id,product_id,pack_code
+        from shop_product_pack
+        where product_id=#{productId}
+        limit 1
+    </select>
+    <select id="getByProductIds" resultMap="BaseResultMap">
+        select id,product_id,pack_code
+        from shop_product_pack
+        where product_id in (
+        <foreach collection="list" separator="," item="id">
+            #{id}
+        </foreach>
+        )
+    </select>
+</mapper>

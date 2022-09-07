@@ -1,0 +1,346 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.pochi.mapper.ShopProductMapper">
+    <resultMap id="BaseResultMap" type="com.demo.pochi.pojo.ShopProduct">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="pic" property="pic"/>
+        <result column="sub_title" property="subTitle"/>
+        <result column="price" property="price"/>
+        <result column="sale" property="sale"/>
+        <result column="comment_num" property="commentNum"/>
+        <result column="stock" property="stock"/>
+        <result column="low_stock" property="lowStock"/>
+        <result column="point" property="point"/>
+        <result column="album_pics" property="albumPics"/>
+        <result column="product_comment" property="productComment"/>
+        <result column="product_content" property="productContent"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="pack_code" property="packCode"/>
+        <result column="brand_id" property="brandId"/>
+        <result column="brand_name" property="brandName"/>
+        <result column="trans_fee" property="transFee"/>
+        <result column="specs" property="specs"/>
+        <result column="publish_status" property="publishStatus"/>
+        <result column="new_status" property="newStatus"/>
+        <result column="recommend_status" property="recommendStatus"/>
+        <result column="verify_status" property="verifyStatus"/>
+        <result column="sort" property="sort"/>
+        <result column="promotion_price" property="promotionPrice"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="creat_by" property="createBy"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="deleted" property="deleted"/>
+    </resultMap>
+    <insert id="save">
+        insert into shop_product(id, name, pic, sub_title, price, stock, low_stock, point,
+                                 album_pics, product_comment, product_content, category_id, pack_code, brand_id,
+                                 brand_name, trans_fee, specs, publish_status, new_status, recommend_status,
+                                 sort, promotion_price, create_by, update_by)
+        values (#{id}, #{name}, #{pic}, #{subTitle}, #{price}, #{stock}, #{lowStock}, #{point},
+                #{albumPics}, #{productComment}, #{productContent}, #{categoryId}, #{packCode}, #{brandId},
+                #{brandName}, #{transFee}, #{specs}, #{publishStatus}, #{newStatus}, #{recommendStatus},
+                #{sort}, #{promotionPrice}, #{createBy}, #{updateBy})
+    </insert>
+    <update id="update">
+        update shop_product
+        <set>
+            <if test="name != null and name != ''">
+                name=#{name},
+            </if>
+            <if test="pic != null and pic != ''">
+                pic=#{pic},
+            </if>
+            <if test="subTitle != null and subTitle != ''">
+                sub_title=#{subTitle},
+            </if>
+            <if test="price != null and price != ''">
+                price=#{price},
+            </if>
+
+            <if test="stock != null and stock != ''">
+                stock=#{stock},
+            </if>
+            <if test="lowStock != null and lowStock != ''">
+                low_stock=#{lowStock},
+            </if>
+            <if test="point != null and point != ''">
+                point=#{point},
+            </if>
+            <if test="albumPics != null and albumPics != ''">
+                album_pics=#{albumPics},
+            </if>
+            <if test="productComment != null and productComment != ''">
+                product_comment=#{productComment},
+            </if>
+            <if test="productContent != null and productContent != ''">
+                product_content=#{productContent},
+            </if>
+            <if test="categoryId != null and categoryId != ''">
+                category_id=#{categoryId},
+            </if>
+            <if test="packCode != null and packCode != ''">
+                pack_code=#{packCode},
+            </if>
+            <if test="brandId != null and brandId != ''">
+                brand_id=#{brandId},
+            </if>
+            <if test="brandName != null and brandName != ''">
+                brand_name=#{brandName},
+            </if>
+            <if test="transFee != null and transFee != ''">
+                trans_fee=#{transFee},
+            </if>
+            <if test="specs != null and specs != ''">
+                specs=#{specs},
+            </if>
+
+            <if test="sort != null and sort != ''">
+                sort=#{sort},
+            </if>
+            <if test="promotionPrice != null and promotionPrice != ''">
+                promotion_price=#{promotionPrice},
+            </if>
+            <if test="updateTime != null and updateTime != ''">
+                update_time=#{updateTime},
+            </if>
+            <if test="updateBy != null and updateBy != ''">
+                update_by=#{updateBy}
+            </if>
+
+        </set>
+        where id=#{id}
+    </update>
+    <update id="delete">
+        update shop_product set deleted=1
+        where id=#{id}
+    </update>
+    <update id="updatePublish">
+        update shop_product
+        set publish_status=#{publishStatus}
+        where id=#{id}
+    </update>
+    <update id="updateNewStatus">
+        update shop_product
+        set new_status=#{newStatus}
+        where id=#{id}
+    </update>
+    <update id="updateRecommend">
+        update shop_product
+        set recommend_status=#{recommendStatus}
+        where id=#{id}
+    </update>
+
+    <select id="getByPage" resultMap="BaseResultMap">
+        select id,
+        name,
+        pic,
+        sub_title,
+        price,
+        sale,
+        comment_num,
+        stock,
+        low_stock,
+        point,
+        album_pics,
+        category_id,
+        brand_id,
+        brand_name,
+        trans_fee,
+        specs,
+        publish_status,
+        new_status,
+        recommend_status,
+        sort,
+        promotion_price,
+        create_time,
+        update_time,
+        create_by,
+        update_by
+        from shop_product
+        where deleted = 0
+
+        <if test="params.createBy!=null and params.createBy!=''">
+            and create_by = #{params.createBy}
+        </if>
+        <if test="params.publishStatus!=null">
+            and publish_status = #{params.publishStatus}
+        </if>
+        <if test="params.newStatus!=null">
+            and new_status = #{params.newStatus}
+        </if>
+        <if test="params.recommendStatus!=null">
+            and recommend_status = #{params.recommendStatus}
+        </if>
+        <if test="params.brandId!=null and params.brandId!=''">
+            and brand_id = #{params.brandId}
+        </if>
+        <if test="params.name!=null and params.name!=''">
+            and name like concat('%', #{params.name},'%')
+        </if>
+        order by sort
+        limit #{index}, #{pageSize}
+    </select>
+    <select id="countByPage" resultType="java.lang.Integer">
+        select count(*)
+        from shop_product
+        where deleted = 0
+
+        <if test="params.createBy!=null and params.createBy!=''">
+            and create_by = #{params.createBy}
+        </if>
+        <if test="params.publishStatus!=null">
+            and publish_status = #{params.publishStatus}
+        </if>
+        <if test="params.newStatus!=null">
+            and new_status = #{params.newStatus}
+        </if>
+        <if test="params.recommendStatus!=null">
+            and recommend_status = #{params.recommendStatus}
+        </if>
+        <if test="params.brandId!=null and params.brandId!=''">
+            and brand_id = #{params.brandId}
+        </if>
+        <if test="params.name!=null and params.name!=''">
+            and name like concat('%', #{params.name},'%')
+        </if>
+    </select>
+    <select id="getById" resultMap="BaseResultMap">
+        select
+        id,
+        name,
+        pic,
+        sub_title,
+        price,
+        sale,
+        comment_num,
+        stock,
+        low_stock,
+        point,
+        album_pics,
+        product_comment,
+        product_content,
+        category_id,
+        pack_code,
+        brand_id,
+        brand_name,
+        trans_fee,
+        specs,
+        publish_status,
+        new_status,
+        recommend_status,
+        verify_status,
+        sort,
+        promotion_price,
+        create_time,
+        update_time,
+        deleted,
+        create_by,
+        update_by
+        from shop_product
+        where id = #{id}
+    </select>
+    <select id="getByIds" resultType="com.demo.pochi.pojo.ShopProduct">
+        select
+        id,
+        name,
+        price,
+        sale,
+        stock,
+        low_stock,
+        category_id,
+        brand_id,
+        specs
+        from shop_product
+        where deleted=0 and id in (
+        <foreach collection="list" separator="," item="id">
+            #{id}
+        </foreach>
+        )
+    </select>
+    <select id="getByPageHasNotPack" resultMap="BaseResultMap">
+        select
+        p.id,
+        p.name,
+        p.pic,
+        p.sub_title,
+        p.price,
+        p.sale,
+        p.comment_num,
+        p.stock,
+        p.low_stock,
+        p.point,
+        p.album_pics,
+        p.category_id,
+        p.brand_id,
+        p.brand_name,
+        p.trans_fee,
+        p.specs,
+        p.publish_status,
+        p.new_status,
+        p.recommend_status,
+        p.sort,
+        p.promotion_price,
+        p.create_time,
+        p.update_time,
+        p.create_by,
+        p.update_by
+        from shop_product as p
+        where p.deleted = 0
+            and not exists (
+            select  1 from shop_product_pack spp
+            where p.id=spp.product_id
+        )
+        <if test="params.createBy!=null and params.createBy!=''">
+            and create_by = #{params.createBy}
+        </if>
+        <if test="params.publishStatus!=null">
+            and p.publish_status = #{params.publishStatus}
+        </if>
+        <if test="params.newStatus!=null">
+            and p.new_status = #{params.newStatus}
+        </if>
+        <if test="params.recommendStatus!=null">
+            and p.recommend_status = #{params.recommendStatus}
+        </if>
+        <if test="params.brandId!=null and params.brandId!=''">
+            and p.brand_id = #{params.brandId}
+        </if>
+        <if test="params.name!=null and params.name!=''">
+            and p.name like concat('%', #{params.name},'%')
+        </if>
+        order by p.sort
+        limit #{index}, #{pageSize}
+    </select>
+    <select id="countByPageHasNotPack" resultType="java.lang.Integer">
+        select
+       count(*)
+        from shop_product as p
+        where p.deleted = 0
+        and not exists (
+        select  1 from shop_product_pack spp
+        where p.id=spp.product_id
+        )
+        <if test="params.createBy!=null and params.createBy!=''">
+            and create_by = #{params.createBy}
+        </if>
+        <if test="params.publishStatus!=null">
+            and p.publish_status = #{params.publishStatus}
+        </if>
+        <if test="params.newStatus!=null">
+            and p.new_status = #{params.newStatus}
+        </if>
+        <if test="params.recommendStatus!=null">
+            and p.recommend_status = #{params.recommendStatus}
+        </if>
+        <if test="params.brandId!=null and params.brandId!=''">
+            and p.brand_id = #{params.brandId}
+        </if>
+        <if test="params.name!=null and params.name!=''">
+            and p.name like concat('%', #{params.name},'%')
+        </if>
+
+    </select>
+
+</mapper>

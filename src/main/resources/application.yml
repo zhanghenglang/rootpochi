@@ -1,0 +1,62 @@
+spring:
+  datasource:
+    druid:
+      url: jdbc:mysql://localhost:3306/rootpochi?serverTimezone=GMT%2B8&useUnicode=true&characterEncoding=utf8
+      username: root
+      password: zhl521520
+      driver-class-name: com.mysql.jdbc.Driver
+      initialSize: 5
+      minIdle: 5
+      maxActive: 20
+      maxWait: 10000
+      testOnBorrow: true
+      testOnReturn: false
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+  servlet:
+    multipart:
+      max-file-size: 5MB
+      max-request-size: 20MB
+  redis:
+    host: 127.0.0.1
+    port: 6379
+  data:
+    mongodb:
+      host: 127.0.0.1
+      port: 27017
+      database: rootpochi
+mybatis:
+  mapper-locations: classpath:mapper/*Mapper.xml
+  type-aliases-package: com.demo.rootpochi
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# OSS相关配置信息
+aliyun:
+  oss:
+    endpoint: http://oss-cn-hangzhou.aliyuncs.com # oss对外服务的访问域名
+    access-key-id: LTAI5tLDnukYhM5HtUTosx5P # 访问身份验证中用到用户标识
+    access-key-secret: 8AR149KKG6byA6qF0hv6ACXwTysM0Q # 用户用于加密签名字符串和oss用来验证签名字符串的密钥
+    bucket-name: pochid # oss的存储空间
+    view-url: https://pochid.oss-cn-hangzhou.aliyuncs.com/ # 预览url  https://pochid.oss-cn-hangzhou.aliyuncs.com
+    max-size: 10 # 最大文件大小，单位M
+    upload-dirs: # 上传的目录
+      - header
+      - types
+      - product
+      - markdown
+      - tinymce
+    image-types: # 上传后缀
+      - JPG
+      - PNG
+      - JPEG
+      - GIF
+server:
+  port: 8080
+
+#微信配置
+wechat:
+  appId: wxd41d11dacf5e34a2
+  appSecret: 2055ec4b5de2418dfa9167d0d652e873
+  grantType: authorization_code
+  loginUrl: https://api.weixin.qq.com/sns/jscode2session

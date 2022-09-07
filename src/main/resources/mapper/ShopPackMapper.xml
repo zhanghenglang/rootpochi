@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.pochi.mapper.ShopPackMapper">
+    <resultMap id="BaseResultMap" type="com.demo.pochi.pojo.ShopPack">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="product_count" property="productCount"/>
+        <result column="create_time" property="createTime"/>
+        <result column="create_by" property="createBy"/>
+    </resultMap>
+
+    <insert id="save">
+        insert into shop_pack(id, name, product_count, create_by)
+        VALUES (#{id}, #{name}, #{productCount}, #{createBy})
+    </insert>
+    <update id="update">
+        update shop_pack
+        <set>
+            <if test="name!=null and name!=''">
+                name = #{name},
+            </if>
+            <if test="productCount!=null">
+                product_count = #{productCount}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <update id="updateProductCount">
+        update shop_pack
+        set product_count=product_count+#{size}
+        where id=#{packCode}
+    </update>
+    <delete id="delete">
+        delete
+        from shop_pack
+        where id = #{id}
+    </delete>
+    <select id="get" resultMap="BaseResultMap">
+        select id, name, product_count, create_by
+        from shop_pack
+        where id = #{id}
+    </select>
+    <select id="getByPage" resultMap="BaseResultMap">
+        select id, name, product_count, create_time, create_by
+        from shop_pack
+        limit #{index}, #{pageSize}
+    </select>
+    <select id="countByPage" resultType="java.lang.Integer">
+        select count(*)
+        from shop_pack
+    </select>
+
+</mapper>

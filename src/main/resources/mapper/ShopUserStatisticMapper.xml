@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.pochi.mapper.ShopUserStatisticMapper">
+    <resultMap id="BaseResultMap" type="com.demo.pochi.pojo.ShopUserStatistic">
+        <id column="id" property="id"/>
+        <result column="user_id" property="userId"/>
+        <result column="consume_amount" property="consumeAmount"/>
+        <result column="order_count" property="orderCount"/>
+        <result column="coupon_count" property="couponCount"/>
+        <result column="commentCount" property="commentCount"/>
+        <result column="return_order_count" property="returnOrderCount"/>
+        <result column="login_count" property="loginCount"/>
+    </resultMap>
+    <insert id="save">
+        insert into shop_user_statistic(id, user_id)
+        values (#{id}, #{userId})
+    </insert>
+
+
+</mapper>

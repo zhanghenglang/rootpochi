@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.pochi.mapper.SysMenuMapper">
+    <resultMap id="BaseResultMap" type="com.demo.pochi.pojo.SysMenu">
+        <id column="menu_id" property="menuId"/>
+        <result column="menu_name" property="menuName"/>
+        <result column="parent_id" property="parentId"/>
+        <result column="order_num" property="orderNum"/>
+        <result column="router_path" property="routerPath"/>
+        <result column="component_url" property="componentUrl"/>
+        <result column="menu_type" property="menuType"/>
+        <result column="visible" property="visible"/>
+        <result column="status" property="status"/>
+        <result column="permission" property="permission"/>
+        <result column="icon" property="icon"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_by" property="updateBy"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="deleted" property="deleted"/>
+    </resultMap>
+    <insert id="save">
+        insert into sys_menu(menu_name, parent_id, order_num, router_path, component_url, menu_type, visible,
+                             status, permission, icon, create_by, update_by)
+        VALUES (#{menuName}, #{parentId}, #{orderNum}, #{routerPath}, #{componentUrl}, #{menuType}, #{visible},
+                #{status}, #{permission}, #{icon}, #{createBy}, #{updateBy})
+    </insert>
+    <update id="update">
+        update sys_menu
+        <set>
+            <if test="menuName!=null and menuName!=''">
+                menu_name = #{menuName},
+            </if>
+            <if test="parentId!=null">
+                parent_id = #{parentId},
+            </if>
+            <if test="orderNum!=null">
+                order_num = #{orderNum},
+            </if>
+            <if test="routerPath!=null and routerPath!=''">
+                router_path = #{routerPath},
+            </if>
+            <if test="componentUrl!=null and componentUrl!=''">
+                component_url = #{componentUrl},
+            </if>
+            <if test="menuType!=null">
+                menu_type = #{menuType},
+            </if>
+            <if test="componentUrl!=null and componentUrl!=''">
+                component_url = #{componentUrl},
+            </if>
+            <if test="visible!=null">
+                visible = #{visible},
+            </if>
+            <if test="status!=null">
+                status = #{status},
+            </if>
+            <if test="permission!=null and permission!=''">
+                permission = #{permission},
+            </if>
+            <if test="icon!=null and icon!=''">
+                icon = #{icon},
+            </if>
+            <if test="updateBy!=null and updateBy!=''">
+                update_by = #{updateBy},
+            </if>
+        </set>
+        where menu_id = #{menuId}
+    </update>
+    <update id="deleteById">
+        update sys_menu
+        set deleted = 1
+        where menu_id = #{menuId}
+    </update>
+    <select id="getByParentIdAndName" resultMap="BaseResultMap">
+        select menu_id,menu_name, parent_id
+         from sys_menu
+        where parent_id = #{parentId}
+        and menu_name = #{menuName}
+        and deleted = 0
+    </select>
+    <select id="getById" resultMap="BaseResultMap">
+         select menu_id,
+               menu_name,
+               parent_id,
+               order_num,
+               router_path,
+               component_url,
+               menu_type,
+               visible,
+               status,
+               permission,
+               icon
+        from sys_menu
+        where menu_id = #{menuId}
+    </select>
+    <select id="countByPage" resultType="java.lang.Integer">
+        select count(*)
+        from sys_menu
+        where deleted = 0
+    </select>
+    <select id="getByPage" resultMap="BaseResultMap">
+        select menu_id,
+               menu_name,
+               parent_id,
+               order_num,
+               router_path,
+               component_url,
+               menu_type,
+               visible,
+               status,
+               permission,
+               icon,
+               create_by,
+               create_time,
+               update_by,
+               update_time
+        from sys_menu
+        where deleted = 0
+        order by order_num
+        limit #{index}, #{pageSize}
+    </select>
+    <select id="getAll" resultMap="BaseResultMap">
+        select menu_id,
+               menu_name,
+               parent_id,
+               order_num,
+               router_path,
+               component_url,
+               menu_type,
+               visible,
+               status,
+               permission,
+               icon,
+               create_by,
+               create_time,
+               update_by,
+               update_time
+        from sys_menu
+        where deleted = 0
+        order by order_num
+    </select>
+    <select id="getRoleSelectMenu" resultMap="BaseResultMap">
+        select m.menu_id, m.menu_name, m.parent_id
+        from sys_menu as m
+                 left join sys_role_menu srm on m.menu_id = srm.menu_id
+        where m.deleted = 0
+          and srm.role_id = #{roleId}
+          and m.menu_id not in (
+            select tm.parent_id
+            from sys_menu tm
+                     inner join sys_role_menu s on tm.menu_id = s.menu_id
+                and s.role_id = #{roleId}
+            where tm.deleted = 0
+        )
+    </select>
+    <select id="getEnableMenuByUserId"  resultMap="BaseResultMap">
+        select * from sys_menu m
+        inner join sys_role_menu srm on m.menu_id=srm.menu_id
+        inner join sys_role sr on srm.role_id=sr.role_id
+        inner join sys_user_role sur on sr.role_id=sur.role_id
+        where
+        m.status=1
+        and m.deleted=0
+        and m.menu_type in (1,2)
+        and sur.user_id=#{userId}
+        order by m.order_num
+    </select>
+    <select id="getMenuCodeByUserId" resultType="java.lang.String">
+        select m.permission
+        from sys_menu m
+                 inner join sys_role_menu srm on m.menu_id = srm.menu_id
+                 inner join sys_role sr on srm.role_id = sr.role_id
+                 inner join sys_user_role sur on sr.role_id = sur.role_id
+        where m.status = 1
+          and m.deleted = 0
+          and sur.user_id = #{userId}
+          and permission is not null
+
+    </select>
+    <select id="getAuthByUserId" resultMap="BaseResultMap">
+        select m.permission
+        from sys_menu m
+                 inner join sys_role_menu srm on m.menu_id = srm.menu_id
+                 inner join sys_role sr on srm.role_id = sr.role_id
+                 inner join sys_user_role sur on sr.role_id = sur.role_id
+        where m.status = 1
+          and m.deleted = 0
+          and sur.user_id = #{id}
+          and permission is not null
+    </select>
+
+
+</mapper>

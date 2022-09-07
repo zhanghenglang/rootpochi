@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.pochi.mapper.ShopCouponProductMapper">
+    <resultMap id="BaseResultMap" type="com.demo.pochi.pojo.ShopCouponProduct">
+        <id column="id" property="id"/>
+        <result column="product_id" property="productId"/>
+        <result column="coupon_id" property="couponId"/>
+    </resultMap>
+    <insert id="saveBatch">
+        insert into shop_coupon_product( coupon_id, product_id) values
+        <foreach collection="list" separator="," item="item">
+            (#{item.couponId}, #{item.productId})
+        </foreach>
+    </insert>
+
+
+
+</mapper>

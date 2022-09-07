@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.pochi.mapper.SysLogMapper">
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.demo.pochi.pojo.SysLog">
+        <id column="log_id" property="logId"/>
+        <result column="log_url" property="logUrl"/>
+        <result column="log_params" property="logParams"/>
+        <result column="log_status" property="logStatus"/>
+        <result column="log_message" property="logMessage"/>
+        <result column="log_ua" property="logUa"/>
+        <result column="log_controller" property="logController"/>
+        <result column="log_method" property="logMethod"/>
+        <result column="log_time" property="logTime"/>
+        <result column="log_result" property="logResult"/>
+        <result column="log_ip" property="logIp"/>
+        <result column="created_date" property="createdDate"/>
+        <result column="created_by" property="createdBy"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        log_id, log_url, log_params, log_status, log_message, log_ua, log_controller, log_method, log_time, log_result, log_ip, created_date, created_by
+    </sql>
+    <insert id="save">
+        insert into mg_sys_log (log_id, log_url, log_params, log_status, log_message, log_ua, log_controller,
+                                log_method, log_time, log_result, log_ip, created_by)
+        values (#{logId}, #{logUrl}, #{logParams}, #{logStatus}, #{logMessage}, #{logUa}, #{logController},
+                #{logMethod}, #{logTime}, #{logResult},
+                #{logIp}, #{createdBy})
+    </insert>
+    <select id="getAll" resultMap="BaseResultMap">
+        select * from  mg_sys_log
+    </select>
+
+
+</mapper>

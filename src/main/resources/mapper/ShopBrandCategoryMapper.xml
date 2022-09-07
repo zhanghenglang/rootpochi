@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.pochi.mapper.ShopBrandCategoryMapper">
+    <resultMap id="BaseResultMap" type="com.demo.pochi.pojo.ShopBrandCategory">
+        <id column="id" property="id"/>
+        <result column="category_id" property="categoryId"/>
+        <result column="brand_id" property="brandId"/>
+    </resultMap>
+
+    <insert id="saveBatch">
+        insert into shop_brand_category(brand_id, category_id) values
+        <foreach collection="list" separator="," item="item">
+            (#{item.brandId}, #{item.categoryId})
+        </foreach>
+    </insert>
+    <delete id="deleteByBrandId">
+        delete
+        from shop_brand_category
+        where brand_id = #{brandId}
+    </delete>
+    <select id="getByBrandId" resultMap="BaseResultMap">
+        select id, brand_id, category_id
+        from shop_brand_category
+        where brand_id = #{brandId}
+    </select>
+    <select id="getByCategoryId" resultMap="BaseResultMap">
+        select id, brand_id, category_id
+                from shop_brand_category
+                where category_id = #{categoryId}
+    </select>
+
+</mapper>
