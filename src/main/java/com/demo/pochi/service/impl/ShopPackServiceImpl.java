@@ -8,6 +8,7 @@ import com.demo.pochi.mapper.ShopProductPackMapper;
 import com.demo.pochi.pojo.ShopPack;
 import com.demo.pochi.pojo.ShopProduct;
 import com.demo.pochi.pojo.ShopProductPack;
+import com.demo.pochi.pojo.vo.ShopProductPackVo;
 import com.demo.pochi.pojo.vo.SysUserVo;
 import com.demo.pochi.service.ShopPackService;
 import com.demo.pochi.shiro.LoginUser;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -157,6 +159,55 @@ public class ShopPackServiceImpl implements ShopPackService {
         }
 
         }
+
+    @Override
+    public List<ShopProductPackVo> getByProductId(Long productId) {
+        //根据商品信息查询套装信息
+        ShopProduct shopProduct = shopProductMapper.getInfoById(productId);
+        Long packCode = shopProduct.getPackCode();
+        //判断该商品是否存在套装信息，存在;查询该套装内的其他商品信息，若不存在则封装该商品到套装
+        if (packCode == null){
+            List<ShopProductPackVo> resultList = new ArrayList<>(1);
+            //说明该商品没有加入任何套装，将该商品自己视为一个套装
+            ShopProductPackVo packVo = new ShopProductPackVo();
+            packVo.setProductId(productId);
+            packVo.setPic(shopProduct.getPic());
+            packVo.setPackCode(shopProduct.getPackCode());
+            packVo.setPrice(shopProduct.getPrice());
+            packVo.setProductName(shopProduct.getName());
+            packVo.setSpecName(shopProduct.getSpecs());
+            packVo.setStock(shopProduct.getStock());
+            if (StringUtils.isBlank(packVo.getSpecName())) {
+                packVo.setSpecName(packVo.getProductName());
+            }
+            resultList.add(packVo);
+            return resultList;
+        }
+        //商品套装编号不为空
+        //根据套装编号查询所有商品
+        List<ShopProductPack> productPackList = shopProductPackMapper.getByPackCode(packCode);
+        //取出所有商品编号
+        List<Long> productIds = productPackList.stream().map(ShopProductPack::getProductId).collect(Collectors.toList());
+        //查询所有商品
+        List<ShopProduct> shopProductList = shopProductMapper.getByIds(productIds);
+        //转换成Vo
+        List<ShopProductPackVo> list = shopProductList.stream().map(e -> {
+            ShopProductPackVo packVo = new ShopProductPackVo();
+            packVo.setProductId(productId);
+            packVo.setPic(e.getPic());
+            packVo.setPackCode(e.getPackCode());
+            packVo.setPrice(e.getPrice());
+            packVo.setProductName(e.getName());
+            packVo.setSpecName(e.getSpecs());
+            packVo.setStock(e.getStock());
+            if (StringUtils.isBlank(packVo.getSpecName())) {
+                packVo.setSpecName(packVo.getProductName());
+            }
+            return packVo;
+        }).collect(Collectors.toList());
+
+        return list;
+    }
 
 
 }

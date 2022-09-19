@@ -39,4 +39,24 @@ public interface ShopCouponMapper {
      * @return
      */
     Integer countByPage(Page<ShopCoupon> page);
+
+    /**
+     * 查询全场通用优惠券
+     * @return
+     */
+    List<ShopCoupon> getBothCoupon();
+
+    /**
+     * 根据分类ID查询优惠券
+     * @param categoryId
+     * @return
+     */
+    List<ShopCoupon> getByCategoryId(Long categoryId);
+
+    /**
+     * 根据商品ID查询优惠券
+     * @param productId
+     * @return
+     */
+    List<ShopCoupon> getByProductId(Long productId);
 }

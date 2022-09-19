@@ -6,6 +6,7 @@ import com.demo.pochi.pojo.ShopBrand;
 import com.demo.pochi.pojo.SysBanner;
 import com.demo.pochi.service.SysBannerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -104,4 +105,22 @@ public class SysBannerController {
     }
 
 
+    /**
+     * 微信小程序
+     * 查询首页轮播图
+     * @return
+     */
+    @RequestMapping(value = "/getBannerList" ,method = RequestMethod.GET)
+    public Result<List<Banner>> getBannerList(){
+        List<Banner> list = sysBannerService.getBannerList();
+        return new Result<>(list);
+    }
+    /**
+     * 首页轮播图，点击跳转功能和点击量增加
+     */
+    @RequestMapping(value = "/addClickCount/{id}", method = RequestMethod.PUT)
+    public Result<?> addClickCount(@PathVariable Long id) {
+        sysBannerService.addClickCount(id);
+        return new Result<>();
+    }
 }

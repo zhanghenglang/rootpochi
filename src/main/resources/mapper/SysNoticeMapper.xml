@@ -82,4 +82,12 @@
             and enabled = #{params.enabled}
         </if>
     </select>
+    <select id="getNoticeList" resultMap="BaseResultMap">
+select notice_id,
+               notice_title
+        from sys_notice
+        where deleted = 0
+          and enabled = 1
+        order by sorted
+    </select>
 </mapper>

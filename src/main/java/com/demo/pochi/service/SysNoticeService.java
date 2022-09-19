@@ -3,6 +3,8 @@ package com.demo.pochi.service;
 import com.demo.pochi.common.Page;
 import com.demo.pochi.pojo.SysNotice;
 
+import java.util.List;
+
 public interface SysNoticeService {
     /**
      * 添加
@@ -47,4 +49,11 @@ public interface SysNoticeService {
      * @return
      */
     Page<SysNotice> getByPage(Page<SysNotice> page);
+
+    /**
+     * 首页查询公告通知
+     * @return
+     */
+    List<SysNotice> getNoticeList();
+
 }

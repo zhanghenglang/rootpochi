@@ -89,4 +89,30 @@ public interface ShopProductService {
      * @return
      */
     Page<ShopProductVo> getByPageHasNotPack(Page<ShopProductVo> page);
+
+    /**
+     * 查询新品商品
+     * @return
+     */
+    List<ShopProduct> getNewProduct();
+
+    /**
+     * 查询商品推荐
+     * @return
+     */
+    List<ShopProduct> getRecommendList();
+
+    /**
+     * 根据id查询商品详情功能
+     * @param id
+     * @return
+     */
+    ShopProductVo get(Long id);
+
+    /**
+     * 排行榜
+     * @param productId
+     * @return
+     */
+    List<ShopProduct> getRankByProduct(Long productId);
 }

@@ -24,7 +24,7 @@
     <update id="updateLoginInfo">
         update shop_user
         <set>
-            <if test="phone！=null and phone!=''">
+            <if test="phone!=null and phone!=''">
                 phone=#{phone},
             </if>
             <if test="password!=null and password!=''">
@@ -37,6 +37,11 @@
         where id=#{id}
 
     </update>
+    <delete id="clearById">
+        delete
+        from shop_user
+        where id = #{id}
+    </delete>
     <select id="getByOpenId" resultMap="BaseResultMap">
         select id,
                phone,

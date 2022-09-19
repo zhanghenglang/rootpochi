@@ -60,6 +60,11 @@
         set deleted = 1
         where id = #{id}
     </update>
+    <update id="updateClickCount">
+         update sys_banner
+        set click_count = click_count + 1
+        where id = #{id}
+    </update>
     <select id="get" resultMap="BaseResultMap">
         select id,
                name,
@@ -102,6 +107,16 @@
         <if test="params.status!=null">
             and status = #{params.status}
         </if>
+    </select>
+    <select id="getBannerList" resultMap="BaseResultMap">
+         select id,
+               name,
+               pic,
+               url
+        from sys_banner
+        where status = 1
+          and deleted = 0
+        order by sort
     </select>
 
 </mapper>

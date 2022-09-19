@@ -8,6 +8,11 @@ import com.demo.pochi.service.ShopCouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+/**
+ * 优惠券
+ */
 @RestController
 @RequestMapping("/shopCoupon")
 public class ShopCouponController {
@@ -59,4 +64,17 @@ public class ShopCouponController {
         return new Result<>(page);
     }
 
+    /**
+     * 查询指定商品可以使用的优惠券
+     * 全场通用优惠券
+     * 该商品所在分类的优惠券
+     * 该商品的优惠券
+     * @param productId
+     * @return
+     */
+    @RequestMapping(value = "/getProductCoupon/{productId}", method = RequestMethod.GET)
+    public Result<List<ShopCoupon>> getProductCoupon(@PathVariable Long productId) {
+        List<ShopCoupon> list = shopCouponService.getProductCoupon(productId);
+        return new Result<>(list);
+    }
 }

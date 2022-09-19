@@ -53,4 +53,11 @@ public interface SysNoticeMapper {
      * @return
      */
     List<SysNotice> getByPage(Page<SysNotice> page);
+
+    /**
+     * 首页查询公告通知
+     * @return
+     */
+    List<SysNotice> getNoticeList();
+
 }

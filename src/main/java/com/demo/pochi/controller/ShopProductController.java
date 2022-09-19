@@ -4,6 +4,7 @@ import com.demo.pochi.common.Page;
 import com.demo.pochi.common.Result;
 import com.demo.pochi.dto.ShopProductDto;
 import com.demo.pochi.pojo.ShopBrand;
+import com.demo.pochi.pojo.ShopCoupon;
 import com.demo.pochi.pojo.ShopProduct;
 import com.demo.pochi.pojo.vo.ShopProductVo;
 import com.demo.pochi.service.ShopBrandService;
@@ -161,6 +162,47 @@ public class ShopProductController {
        List<ShopProduct> productList = shopProductService.getProductDetailList(packCode);
        return new Result<>(productList);
 
+    }
+
+    /**
+     * 微信小程序
+     * 新品上架
+     */
+    @RequestMapping(value = "/getNewProduct",method = RequestMethod.GET)
+    public Result<List<ShopProduct>> getNewProduct(){
+        List<ShopProduct> list=shopProductService.getNewProduct();
+        return new Result<>(list);
+    }
+
+    /**
+     * 微信小程序端
+     * 查询推荐商品
+     */
+    @RequestMapping(value = "/getRecommendList",method = RequestMethod.GET)
+    public Result<List<ShopProduct>> getRecommendList(){
+        List<ShopProduct> list=shopProductService.getRecommendList();
+        return new Result<>(list);
+    }
+
+    /**
+     * 微信小程序
+     * 商品详情，根据id查询
+     */
+    @RequestMapping(value = "/get/{id}" ,method = RequestMethod.GET)
+    public Result<ShopProductVo> get(@PathVariable Long id){
+        ShopProductVo vo = shopProductService.get(id);
+        return new Result<>(vo);
+    }
+
+    /**
+     * 微信小程序
+     * 排行榜
+     * 查询当前商品在所类目下销量最高的6条数据
+     */
+    @RequestMapping(value = "/getRankByProduct/{productId}",method = RequestMethod.GET)
+    public Result<List<ShopProduct>> getRankByProduct(@PathVariable Long productId){
+     List<ShopProduct> list = shopProductService.getRankByProduct(productId);
+     return new Result<>(list);
     }
 
 

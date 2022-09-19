@@ -2,6 +2,7 @@ package com.demo.pochi.mapper;
 
 import com.demo.pochi.common.Page;
 import com.demo.pochi.pojo.SysBanner;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -59,4 +60,16 @@ public interface SysBannerMapper {
      * @return
      */
     int countByPage(Page<SysBanner> page);
+
+    /**
+     * 查询首页轮播图
+     * @return
+     */
+    List<Banner> getBannerList();
+
+    /**
+     * 点击量＋1
+     * @param id
+     */
+    void updateClickCount(Long id);
 }

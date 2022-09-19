@@ -128,6 +128,11 @@ public class ShopProductCategoryServiceImpl implements ShopProductCategoryServic
          return secondList;
     }
 
+    @Override
+    public List<ShopProductCategory> getNavList() {
+        return shopProductCategoryMapper.getNavList();
+    }
+
     /**
      * 构造树形结构
      *

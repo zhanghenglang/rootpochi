@@ -95,4 +95,9 @@ public class SysNoticeServiceImpl implements SysNoticeService {
         page.setTotalCount(totalCount);
         return page;
     }
+
+    @Override
+    public List<SysNotice> getNoticeList() {
+        return sysNoticeMapper.getNoticeList();
+    }
 }

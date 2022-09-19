@@ -3,6 +3,7 @@ package com.demo.pochi.service;
 import com.demo.pochi.common.Page;
 import com.demo.pochi.pojo.ShopBrand;
 import com.demo.pochi.pojo.SysBanner;
+import org.springframework.boot.Banner;
 
 import java.util.List;
 
@@ -52,4 +53,15 @@ public interface SysBannerService {
     Page<SysBanner> getByPage(Page<SysBanner> page);
 
 
+    /**
+     * 查询首页轮播图
+     * @return
+     */
+    List<Banner> getBannerList();
+
+    /**
+     * 点击量+1
+     * @param id
+     */
+    void addClickCount(Long id);
 }

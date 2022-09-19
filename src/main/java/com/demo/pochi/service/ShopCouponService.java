@@ -4,6 +4,8 @@ import com.demo.pochi.common.Page;
 import com.demo.pochi.dto.ShopCouponDto;
 import com.demo.pochi.pojo.ShopCoupon;
 
+import java.util.List;
+
 public interface ShopCouponService {
 
     /**
@@ -30,4 +32,11 @@ public interface ShopCouponService {
      * @return
      */
     Page<ShopCoupon> getByPage(Page<ShopCoupon> page);
+
+    /**
+     * 查询指定商品允许使用的优惠券
+     * @param productId
+     * @return
+     */
+    List<ShopCoupon> getProductCoupon(Long productId);
 }

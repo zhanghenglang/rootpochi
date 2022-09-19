@@ -136,4 +136,14 @@
         where level = 1
         and deleted=0
     </select>
+    <select id="getNavList" resultMap="BaseResultMap">
+        elect id,
+               name,
+               icon
+        from shop_product_category
+        where level = 3
+          and nav_status = 1
+        order by sort
+        limit 10
+    </select>
 </mapper>

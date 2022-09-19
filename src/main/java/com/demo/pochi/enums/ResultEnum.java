@@ -25,8 +25,8 @@ public enum  ResultEnum {
     AUTH_NOT_FOUNT(40012,"权限不足"),
     CATEGORY_EXISTS(40013,"分类已存在"),
     LOGIN_ERROR(40014,"登录失败"),
-    USER_REAL_EXISTS(40015,"用户不存在"),
-    USER_NOT_FOUND(40016,"现有账户不存在");
+    USER_NOT_FOUND(40015,"用户不存在"),
+    USER_REAL_EXISTS(40016,"；用户已存在");
 
 
     private Integer code;

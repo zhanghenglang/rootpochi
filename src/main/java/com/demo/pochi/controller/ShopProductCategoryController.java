@@ -107,5 +107,13 @@ public class ShopProductCategoryController {
         return new Result<>(list);
     }
 
+    /**
+     * 微信小程序端查询首页分类
+     */
+    @RequestMapping(value = "/getNavList",method = RequestMethod.GET)
+    public Result<List<ShopProductCategory>> getNavList(){
+        List<ShopProductCategory> list=shopProductCategoryService.getNavList();
+        return new Result<>(list);
+    }
 
 }

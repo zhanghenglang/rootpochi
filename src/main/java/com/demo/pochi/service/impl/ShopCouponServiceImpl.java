@@ -3,12 +3,11 @@ package com.demo.pochi.service.impl;
 import com.demo.pochi.common.Page;
 import com.demo.pochi.dto.ShopCouponDto;
 import com.demo.pochi.enums.StateEnums;
-import com.demo.pochi.mapper.ShopCouponCategoryMapper;
-import com.demo.pochi.mapper.ShopCouponMapper;
-import com.demo.pochi.mapper.ShopCouponProductMapper;
+import com.demo.pochi.mapper.*;
 import com.demo.pochi.pojo.ShopCoupon;
 import com.demo.pochi.pojo.ShopCouponCategory;
 import com.demo.pochi.pojo.ShopCouponProduct;
+import com.demo.pochi.pojo.ShopProduct;
 import com.demo.pochi.pojo.vo.SysUserVo;
 import com.demo.pochi.service.ShopCouponService;
 import com.demo.pochi.shiro.LoginUser;
@@ -33,7 +32,8 @@ public class ShopCouponServiceImpl implements ShopCouponService {
     private ShopCouponProductMapper shopCouponProductMapper;
     @Autowired
     private IdWorker idWorker;
-
+    @Autowired
+    private ShopProductMapper shopProductMapper;
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void save(ShopCouponDto shopCouponDto) {
@@ -78,5 +78,20 @@ public class ShopCouponServiceImpl implements ShopCouponService {
         page.setList(list);
         page.setTotalCount(totalCount);
         return page;
+    }
+
+    @Override
+    public List<ShopCoupon> getProductCoupon(Long productId) {
+        // 查询商品信息
+        ShopProduct product = shopProductMapper.getInfoById(productId);
+        // 查询全场通用优惠券
+        List<ShopCoupon> bothList = shopCouponMapper.getBothCoupon();
+        // 查询该商品所在分类的优惠券
+        List<ShopCoupon> categoryCouponList = shopCouponMapper.getByCategoryId(product.getCategoryId());
+        // 查询该商品的优惠券
+        List<ShopCoupon> productCouponList = shopCouponMapper.getByProductId(productId);
+        bothList.addAll(categoryCouponList);
+        bothList.addAll(productCouponList);
+        return bothList;
     }
 }

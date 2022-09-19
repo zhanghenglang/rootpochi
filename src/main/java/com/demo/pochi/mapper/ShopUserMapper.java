@@ -27,5 +27,10 @@ public interface ShopUserMapper {
 
     void updateLoginInfo(ShopUser shopUser);
 
+    /**
+     *
+     * 删除没有手机号的用户（根据id删除）
+     * @param id
+     */
     void clearById(Long id);
 }

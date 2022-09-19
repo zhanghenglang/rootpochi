@@ -7,6 +7,8 @@ import com.demo.pochi.service.SysNoticeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/sysNotice")
 public class SysNoticeController {
@@ -93,5 +95,14 @@ public class SysNoticeController {
     public Result<Page<SysNotice>> getByPage(@RequestBody Page<SysNotice> page) {
         page = sysNoticeService.getByPage(page);
         return new Result<>(page);
+    }
+
+    /**
+     * 前端首页查询公告通知
+     */
+    @RequestMapping(value = "/getNoticeList",method = RequestMethod.GET)
+    public Result<List<SysNotice>> getNoticeList(){
+       List<SysNotice>  noticeList = sysNoticeService.getNoticeList();
+       return new Result<>(noticeList);
     }
 }

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.pochi.mapper.ShopCartItemMapper">
+    <resultMap id="BaseResultMap" type="com.demo.pochi.pojo.ShopCartItem">
+        <id column="id" property="id"/>
+        <result column="product_id" property="productId"/>
+        <result column="quantity" property="quantity"/>
+        <result column="price" property="price"/>
+        <result column="product_pic" property="productPic"/>
+        <result column="product_name" property="productName"/>
+        <result column="status" property="status"/>
+        <result column="create_by" property="createBy"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="deleted" property="deleted"/>
+    </resultMap>
+    <insert id="save">
+        insert into shop_cart_item(product_id, price, product_pic, product_name, create_by)
+        values (#{productId}, #{price}, #{productPic}, #{productName}, #{createBy})
+    </insert>
+    <update id="updateProductCount">
+        update shop_cart_item
+        set quantity = quantity + 1
+        where id = #{id}
+    </update>
+    <select id="getByProductIdAndCreateBy" resultMap="BaseResultMap">
+        select id,
+               product_id,
+               quantity,
+               price,
+               product_pic,
+               product_name,
+               status,
+               create_time,
+               create_by
+        from shop_cart_item
+        where product_id = #{productId}
+          and create_by = #{createBy}
+    </select>
+    <select id="getProductCountByUser" resultType="java.lang.Integer">
+        select sum(quantity)
+        from shop_cart_item
+        where create_by = #{username}
+    </select>
+</mapper>

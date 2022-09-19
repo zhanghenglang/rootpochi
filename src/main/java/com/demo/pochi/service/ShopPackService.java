@@ -3,6 +3,9 @@ package com.demo.pochi.service;
 import com.demo.pochi.common.Page;
 import com.demo.pochi.dto.ShopPackDto;
 import com.demo.pochi.pojo.ShopPack;
+import com.demo.pochi.pojo.vo.ShopProductPackVo;
+
+import java.util.List;
 
 public interface ShopPackService {
     /**
@@ -36,4 +39,11 @@ public interface ShopPackService {
      * @param shopPackDto
      */
     void save(ShopPackDto shopPackDto);
+
+    /**
+     * 根据商品编号查询套装
+     * @param productId
+     * @return
+     */
+    List<ShopProductPackVo> getByProductId(Long productId);
 }

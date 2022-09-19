@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.demo.pochi.mapper.ShopProductStatisticMapper">
+    <resultMap id="BaseResultMap" type="com.demo.pochi.pojo.ShopProductStatistic">
+        <id column="id" property="id"/>
+        <result column="product_id" property="productId"/>
+        <result column="collection_count" property="collectionCount"/>
+        <result column="history_count" property="historyCount"/>
+        <result column="order_count" property="orderCount"/>
+        <result column="comment_count" property="commentCount"/>
+    </resultMap>
+
+
+
+</mapper>

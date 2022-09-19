@@ -58,4 +58,9 @@ public interface ShopProductCategoryService {
      */
     List<ShopProductCategory> getAllSecond();
 
+    /**
+     * 查询首页分类最多展示
+     * @return
+     */
+    List<ShopProductCategory> getNavList();
 }

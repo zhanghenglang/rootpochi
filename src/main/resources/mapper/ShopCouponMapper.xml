@@ -70,6 +70,54 @@
             and name like concat('%', #{params.name}, '%')
         </if>
     </select>
-
+    <select id="getBothCoupon" resultMap="BaseResultMap">
+        select id,
+        coupon_type,
+               name,
+               amount,
+               min_point,
+               start_time,
+               end_time,
+               status
+        from shop_coupon
+        where deleted = 0
+          and status = 1
+          and coupon_type = 0
+          and now() between start_time and end_time
+    </select>
+    <select id="getByCategoryId" resultMap="BaseResultMap">
+        select sc.id,
+               sc.coupon_type,
+               sc.name,
+               sc.amount,
+               sc.min_point,
+               sc.start_time,
+               sc.end_time,
+               sc.status
+        from shop_coupon sc
+                 left join shop_coupon_category scc on sc.id = scc.coupon_id
+        where sc.deleted = 0
+          and sc.status = 1
+          and sc.coupon_type = 1
+          and now() between start_time and end_time
+          and scc.category_id = #{categoryId}
+    </select>
+    <select id="getByProductId" resultMap="BaseResultMap">
+        select sc.id,
+               sc.coupon_type,
+               sc.name,
+               sc.amount,
+               sc.min_point,
+               sc.start_time,
+               sc.end_time,
+               sc.status
+        from shop_coupon sc
+                 left join shop_coupon_product scp on sc.id = scp.coupon_id
+        where sc.deleted = 0
+          and sc.status = 1
+          and sc.coupon_type = 1
+          and now() between start_time and end_time
+          and scp.product_id = #{productId}
+    </select>
 
 </mapper>

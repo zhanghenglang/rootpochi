@@ -47,7 +47,7 @@ public class WeChatController {
         //使用shior登录
         Subject subject = SecurityUtils.getSubject();
         //我们约定，openid为username,unionid为password
-        AuthenticationToken  userToken = new UserToken(weChatResult.getOpenId(),weChatResult.getUnionId(), ShopUserRealm.class);
+        AuthenticationToken  userToken = new UserToken(weChatResult.getOpenId(),weChatResult.getOpenId(), ShopUserRealm.class);
         try {
             subject.login(userToken);
         }catch (Exception e){
@@ -68,8 +68,11 @@ public class WeChatController {
      */
     @RequestMapping(value = "/registerLogin", method = RequestMethod.POST)
     public Result<?> registerLogin(@RequestBody WeChatRegisterDto weChatRegisterDto) {
-        //注册用户
-        shopUserService.register(weChatRegisterDto.toShopUser());
+        ShopUser user = shopUserService.getByOpenId(weChatRegisterDto.getOpenId());
+        if (user ==null){
+            //注册用户
+            shopUserService.register(weChatRegisterDto.toShopUser());
+        }
         //  剩下的逻辑和登录一模一样
         // shiro登录
         Subject subject = SecurityUtils.getSubject();
@@ -102,4 +105,19 @@ public class WeChatController {
 
         return new Result<>("绑定成功");
     }
+
+    /**
+     * 获取登录用户
+     *
+     * @return
+     */
+    @RequestMapping(value = "/info", method = RequestMethod.GET)
+    public Result<LoginUser> info() {
+        LoginUser sysUser = ShiroUtils.getLoginUser();
+        sysUser.setPassword(null);
+        sysUser.setStatus(null);
+
+        return new Result<>(sysUser);
+    }
+
 }

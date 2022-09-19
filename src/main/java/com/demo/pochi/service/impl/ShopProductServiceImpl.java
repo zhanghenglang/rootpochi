@@ -453,4 +453,39 @@ public class ShopProductServiceImpl implements ShopProductService {
         page.setTotalCount(totalCount);
         return page;
     }
+
+    @Override
+    public List<ShopProduct> getNewProduct() {
+        return shopProductMapper.getNewProduct();
+    }
+
+    @Override
+    public List<ShopProduct> getRecommendList() {
+        return shopProductMapper.getRecommendList();
+    }
+
+    @Override
+    public ShopProductVo get(Long id) {
+
+        // 根据id查询
+        ShopProduct product = shopProductMapper.getById(id);
+        // 转换成VO
+        ShopProductVo shopProductVo = new ShopProductVo();
+        BeanUtils.copyProperties(product, shopProductVo);
+        // 处理轮播图
+        if (StringUtils.isNotBlank(product.getAlbumPics())) {
+            shopProductVo.setAlbumPicList(Arrays.asList(product.getAlbumPics().split(",")));
+        }
+        return shopProductVo;
+    }
+
+    @Override
+    public List<ShopProduct> getRankByProduct(Long productId) {
+        // 查询商品
+        ShopProduct product = shopProductMapper.getInfoById(productId);
+        //取出分类id
+        Long categoryId = product.getCategoryId();
+        //查询分类下，销量最高的6个商品
+        return shopProductMapper.getRankByCategory(categoryId);
+    }
 }

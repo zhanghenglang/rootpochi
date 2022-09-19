@@ -86,4 +86,30 @@ public interface ShopProductMapper {
      * @return
      */
     Integer countByPageHasNotPack(Page<ShopProductVo> page);
+
+    /**
+     * 查新新品商品
+     * @return
+     */
+    List<ShopProduct> getNewProduct();
+
+    /**
+     * 查询推荐商品
+     * @return
+     */
+    List<ShopProduct> getRecommendList();
+
+    /**
+     * 根据商品id查询商品详情信息
+     * @param id
+     * @return
+     */
+    ShopProduct getInfoById(Long id);
+
+    /**
+     * 查询在当前分类下销量最高的6条数据
+     * @param categoryId
+     * @return
+     */
+    List<ShopProduct> getRankByCategory(Long categoryId);
 }

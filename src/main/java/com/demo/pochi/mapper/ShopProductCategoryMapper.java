@@ -85,4 +85,10 @@ public interface ShopProductCategoryMapper {
     List<ShopProductCategory> getAllSecond();
 
     List<ShopProductCategory> getAllTop();
+
+    /**
+     * 查询首页导航分类
+     * @return
+     */
+    List<ShopProductCategory> getNavList();
 }

@@ -11,6 +11,7 @@ import com.demo.pochi.shiro.LoginUser;
 import com.demo.pochi.utils.ShiroUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.Banner;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -73,6 +74,16 @@ public class SysBannerServiceImpl implements SysBannerService {
         page.setList(list);
         page.setTotalCount(totalCount);
         return page;
+    }
+
+    @Override
+    public List<Banner> getBannerList() {
+        return sysBannerMapper.getBannerList();
+    }
+
+    @Override
+    public void addClickCount(Long id) {
+        sysBannerMapper.updateClickCount(id);
     }
 
 

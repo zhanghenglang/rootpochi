@@ -4,9 +4,12 @@ import com.demo.pochi.common.Page;
 import com.demo.pochi.common.Result;
 import com.demo.pochi.dto.ShopPackDto;
 import com.demo.pochi.pojo.ShopPack;
+import com.demo.pochi.pojo.vo.ShopProductPackVo;
 import com.demo.pochi.service.ShopPackService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/shopPack")
@@ -67,6 +70,18 @@ public class ShopPackController {
     public Result<Page<ShopPack>> getByPage(@RequestBody Page<ShopPack> page) {
         page = shopPackService.getByPage(page);
         return new Result<>(page);
+    }
+
+    /**
+     * 根据商品编号查询套装
+     *
+     * @param productId
+     * @return
+     */
+    @RequestMapping(value = "/getByProductId/{productId}", method = RequestMethod.GET)
+    public Result<List<ShopProductPackVo>> getByProductId(@PathVariable Long productId) {
+        List<ShopProductPackVo> list = shopPackService.getByProductId(productId);
+        return new Result<>(list);
     }
 
 
