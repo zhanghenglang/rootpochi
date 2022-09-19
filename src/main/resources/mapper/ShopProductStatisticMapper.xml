@@ -9,7 +9,25 @@
         <result column="order_count" property="orderCount"/>
         <result column="comment_count" property="commentCount"/>
     </resultMap>
-
-
+    <insert id="saveByProductId">
+        insert into shop_product_statistic(product_id)
+        values (#{productId})
+    </insert>
+    <update id="updateHistory">
+        update shop_product_statistic
+        set history_count = history_count + 1
+        where id = #{id}
+    </update>
+    <select id="getByProductId" resultMap="BaseResultMap">
+        select id,
+               product_id,
+               collection_count,
+               history_count,
+               order_count,
+               comment_count
+        from shop_product_statistic
+        where product_id = #{productId}
+        limit 1
+    </select>
 
 </mapper>
