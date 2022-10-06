@@ -1,7 +1,10 @@
 package com.demo.pochi.mapper;
 
+import com.demo.pochi.common.Page;
 import com.demo.pochi.pojo.ShopCartItem;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public interface ShopCartItemMapper {
@@ -32,4 +35,17 @@ public interface ShopCartItemMapper {
      * @return
      */
     Integer getProductCountByUser(String username);
+
+    /**
+     * 分页查询
+     * @param page
+     * @return
+     */
+    List<ShopCartItem> getByPage(Page<ShopCartItem> page);
+
+    /**
+     * 批量删除
+     * @param list
+     */
+    void deleteByIds(List<Long> list);
 }

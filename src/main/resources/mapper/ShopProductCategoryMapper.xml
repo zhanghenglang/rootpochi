@@ -137,7 +137,7 @@
         and deleted=0
     </select>
     <select id="getNavList" resultMap="BaseResultMap">
-        elect id,
+        select id,
                name,
                icon
         from shop_product_category

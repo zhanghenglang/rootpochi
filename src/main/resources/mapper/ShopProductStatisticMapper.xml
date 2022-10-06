@@ -13,11 +13,18 @@
         insert into shop_product_statistic(product_id)
         values (#{productId})
     </insert>
+    <insert id="addCollectionCount">
+    insert into shop_product_statistic(product_id)
+        values (#{productId})
+    </insert>
     <update id="updateHistory">
         update shop_product_statistic
         set history_count = history_count + 1
         where id = #{id}
     </update>
+    <delete id="removeCollectionCount">
+        delete from shop_product_statistic where product_id = #{productId}
+    </delete>
     <select id="getByProductId" resultMap="BaseResultMap">
         select id,
                product_id,
@@ -28,6 +35,23 @@
         from shop_product_statistic
         where product_id = #{productId}
         limit 1
+    </select>
+    <select id="getByProductIds" resultMap="BaseResultMap">
+        select id,
+               product_id,
+               collection_count,
+               history_count,
+               order_count,
+               comment_count
+        from shop_product_statistic
+        where product_id in (
+         <foreach collection="list" item="productId" separator=",">
+
+            #{productId}
+
+         </foreach>
+         )
+
     </select>
 
 </mapper>

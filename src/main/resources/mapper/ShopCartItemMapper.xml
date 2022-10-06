@@ -23,6 +23,13 @@
         set quantity = quantity + 1
         where id = #{id}
     </update>
+    <delete id="deleteByIds">
+        delete from shop_cart_item where id in (
+        <foreach collection="list" item="id" separator=",">
+            #{id}
+        </foreach>
+        )
+    </delete>
     <select id="getByProductIdAndCreateBy" resultMap="BaseResultMap">
         select id,
                product_id,
@@ -41,5 +48,41 @@
         select sum(quantity)
         from shop_cart_item
         where create_by = #{username}
+    </select>
+    <select id="getByPage" resultMap="BaseResultMap">
+ select id,
+               product_id,
+               quantity,
+               price,
+               product_pic,
+               product_name,
+               status,
+               create_time,
+               create_by
+        from shop_cart_item
+        where deleted = 0
+          and status = 1
+          and create_by = #{params.username}
+        order by create_time desc
+        limit #{index}, #{pageSize}
+    </select>
+
+    <select id="getByIds" resultMap="BaseResultMap">
+        select id,
+        product_id,
+        quantity,
+        price,
+        product_pic,
+        product_name,
+        status,
+        create_time,
+        create_by
+        from shop_cart_item
+        where deleted = 0
+        and id in (
+        <foreach collection="list" separator="," item="id">
+            #{id}
+        </foreach>
+        )
     </select>
 </mapper>

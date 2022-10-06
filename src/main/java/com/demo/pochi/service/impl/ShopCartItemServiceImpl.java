@@ -1,5 +1,6 @@
 package com.demo.pochi.service.impl;
 
+import com.demo.pochi.common.Page;
 import com.demo.pochi.mapper.ShopCartItemMapper;
 import com.demo.pochi.mapper.ShopProductMapper;
 import com.demo.pochi.pojo.ShopCartItem;
@@ -9,6 +10,9 @@ import com.demo.pochi.shiro.LoginUser;
 import com.demo.pochi.utils.ShiroUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class ShopCartItemServiceImpl implements ShopCartItemService {
@@ -44,5 +48,25 @@ public class ShopCartItemServiceImpl implements ShopCartItemService {
         String username = loginUser.getUsername();
         //根据用户名查询购物车商品数量
         return shopCartItemMapper.getProductCountByUser(username);
+    }
+
+    @Override
+    public List<ShopCartItem> getByPage(Page<ShopCartItem> page) {
+        String username = ShiroUtils.getLoginUser().getUsername();
+        Map<String, Object> params = page.getParams();
+        params.put("username", username);
+        return shopCartItemMapper.getByPage(page);
+    }
+
+    @Override
+    public void deleteByIds(List<Long> ids) {
+        shopCartItemMapper.deleteByIds(ids);
+    }
+
+    @Override
+    public void moveToCollection(List<Long> ids) {
+
+
+
     }
 }
